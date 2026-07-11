@@ -6,13 +6,13 @@ const addTask = (e) => {
   // use .get method only get data from element name, not ID
   const task = newForm.get("task");
   const hour = newForm.get("hour");
-
   const obj = {
     task,
     hour,
+    id: idGeneration(),
   };
   taskList.push(obj);
-  // console.log(taskList);
+  console.log(taskList);
   displayList();
 };
 
@@ -36,4 +36,15 @@ const displayList = () => {
   });
 
   entrylist.innerHTML = str;
+};
+const idGeneration = (length = 6) => {
+  const str =
+    "pxzksjkjfoiajhklajoinakljhhanskjeiABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  let id = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * str.length);
+    id += str[randomIndex];
+  }
+
+  return id;
 };
