@@ -5,7 +5,8 @@ const addTask = (e) => {
   const newForm = new FormData(e);
   // use .get method only get data from element name, not ID
   const task = newForm.get("task");
-  const hour = newForm.get("hour");
+  //this + is covert string from form into number
+  const hour = +newForm.get("hour");
   const obj = {
     task,
     hour,
@@ -13,7 +14,7 @@ const addTask = (e) => {
     type: "entry",
   };
   taskList.push(obj);
-  console.log(taskList);
+  // console.log(taskList);
   displayList();
 };
 
@@ -33,7 +34,7 @@ const switchList = (id, type) => {
   taskList.forEach((list) => {
     if (list.id === id) {
       list.type = type;
-      console.log("type change ", type);
+      // console.log("type change ", type);
     }
   });
 
@@ -67,6 +68,7 @@ const displayList = () => {
 };
 const displayBadList = () => {
   const badlist = document.getElementById("badList");
+  const badHour = document.getElementById("badHour");
   let str = "";
   const bad = taskList.filter((list) => list.type === "bad");
   bad.forEach((item, index) => {
@@ -85,27 +87,36 @@ const displayBadList = () => {
                   </td>
                 </tr>`;
   });
-  getTotalHour();
   badlist.innerHTML = str;
+  badHour.innerText = bad.reduce((acc, item) => acc + item.hour, 0);
 };
 
 const getTotalHour = () => {
-  let totalEntryHr = 0;
-  let totalBadHr = 0;
   const entryHour = document.getElementById("entryHour");
-  const badHour = document.getElementById("badHour");
-  taskList.forEach((item) => {
-    if (item.type === "entry") {
-      totalEntryHr += Number(item.hour);
-    }
-    if (item.type === "bad") {
-      totalBadHr += Number(item.hour);
-    }
-  });
-  entryHour.innerText = totalEntryHr;
-  badHour.innerText = totalBadHr;
-};
 
+  /* version 2 
+        use reduce to calculate total  
+    */
+  const totalHr = taskList.reduce((acc, item) => {
+    return acc + item.hour;
+  }, 0);
+  entryHour.innerText = totalHr;
+  /* version 2 */
+  //   let totalEntryHr = 0;
+  //   let totalBadHr = 0;
+  //   const entryHour = document.getElementById("entryHour");
+  //   const badHour = document.getElementById("badHour");
+  //   taskList.forEach((item) => {
+  //     if (item.type === "entry") {
+  //       totalEntryHr += Number(item.hour);
+  //     }
+  //     if (item.type === "bad") {
+  //       totalBadHr += Number(item.hour);
+  //     }
+  //   });
+  //   entryHour.innerText = totalEntryHr;
+  //   badHour.innerText = totalBadHr;
+};
 const idGeneration = (length = 6) => {
   const str =
     "pxzksjkjfoiajhklajoinakljhhanskjeiABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -114,6 +125,5 @@ const idGeneration = (length = 6) => {
     const randomIndex = Math.floor(Math.random() * str.length);
     id += str[randomIndex];
   }
-
   return id;
 };
