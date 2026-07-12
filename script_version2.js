@@ -1,4 +1,5 @@
 let taskList = [];
+let hourPerWeek = 24 * 7;
 const addTask = (e) => {
   // Use formData constructure is easy than the other method if you have a large text filed
 
@@ -13,6 +14,11 @@ const addTask = (e) => {
     id: idGeneration(),
     type: "entry",
   };
+  console.log(getTotalHour);
+  if (getTotalHour() + hour > hourPerWeek) {
+    alert("Sorry no more hour then 168 per week");
+    return;
+  }
   taskList.push(obj);
   // console.log(taskList);
   displayList();
@@ -101,6 +107,7 @@ const getTotalHour = () => {
     return acc + item.hour;
   }, 0);
   entryHour.innerText = totalHr;
+  return totalHr;
   /* version 2 */
   //   let totalEntryHr = 0;
   //   let totalBadHr = 0;
