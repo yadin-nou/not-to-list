@@ -20,17 +20,25 @@ const addTask = (e) => {
 const deleteTask = (id) => {
   // get index from inside array as object
   const idIndex = taskList.findIndex((list) => list.id === id);
-  const result = confirm("Are you sure you want to delete this task?");
+  const result = window.confirm("Are you sure you want to delete this task?");
   //start delete from list
-  result ? taskList.splice(idIndex, 1) : "";
+  if (result && idIndex !== -1) {
+    taskList.splice(idIndex, 1);
+  }
   displayList();
 };
 
 const deleteBadList = (id) => {
-  const idIndex = taskBadList.findIndex((list) => list.id === id);
-  const result = confirm("Are you sure you want to delete this task?");
-  //start delete from list
-  result ? taskBadList.splice(idIndex, 1) : "";
+  //const idIndex = taskBadList.findIndex((list) => list.id === id);
+  const result = window.confirm("Are you sure you want to delete this task?");
+  // use filter() instead of using findIndex
+  // filter() loops through every item in taskBadList and
+  // keeps only the items where the condition is true.
+  //the result is similar deleteTask function but we use filter this time.
+  if (result) {
+    taskBadList = taskBadList.filter((item) => item.id !== id);
+  }
+  //result ? taskBadList.splice(idIndex, 1) : "";
   displayBadList();
 };
 
@@ -58,7 +66,7 @@ const displayList = () => {
     str += `<tr>
                   <td>${index + 1}</td>
                   <td>${item.task}</td>
-                  <td>${item.hour}hr</td>
+                  <td>${item.hour} hr</td>
                   <td class="text-end">
                     <button class="btn btn-danger" onclick="deleteTask('${item.id}')">
                       <i class="fa-solid fa-trash"></i>
@@ -80,7 +88,7 @@ const displayBadList = () => {
     str += `<tr>
                   <td>${index + 1}</td>
                   <td>${item.task}</td>
-                  <td>${item.hour}hr</td>
+                  <td>${item.hour} hr</td>
                   <td class="text-end">
                   <button class="btn btn-warning" onclick="getEntryList('${item.id}')" >
                   <i class="fa-solid fa-arrow-left"></i>
